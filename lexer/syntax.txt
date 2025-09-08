@@ -1,0 +1,10 @@
+module a1(belt b1, inserter i1, pipe p1 ; belt b2, inserter i2, pipe p2) {
+	belt [3] b10, b11, b12 ;
+	belt b14[0];
+	pipe p10, p11, p12 [3];
+	inserter i3 (input ; output);
+	splitter s1 (b10 ; b2, b10);
+	
+	chemical_plant plant1(p1; p3);
+	assembling_machine asm1(i1, p1; i3);
+}

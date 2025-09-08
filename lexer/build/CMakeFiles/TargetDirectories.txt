@@ -1,0 +1,3 @@
+F:/Factorio HDL Compiler Project/lexer/build/CMakeFiles/scanner.dir
+F:/Factorio HDL Compiler Project/lexer/build/CMakeFiles/edit_cache.dir
+F:/Factorio HDL Compiler Project/lexer/build/CMakeFiles/rebuild_cache.dir
