@@ -5,7 +5,7 @@
 
 enum TokenType {
 
-    //Single character tokens
+    //Operation signs
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACKET, RIGHT_BRACKET, LEFT_BRACES, RIGHT_BRACES,
     COMMA, DOT, MINUS, PLUS, SEMICOLON, EQUAL,
 
@@ -18,11 +18,11 @@ enum TokenType {
     STORAGE_TANK, CHEST, SPLITTER, PIPE, HEAT_PIPE,
 
     //Keywords
-    TYPE, FILTER, RECIPE, INPUT_PRIORITY, OUTPUT_PRIORITY, 
+    TYPE, FILTER, RECIPE, INPUT_PRIORITY, OUTPUT_PRIORITY
 
-    //Nulltoken
-    NULLTOKEN
 };
+
+
 
 class Token {
     public:
@@ -36,6 +36,28 @@ class Token {
         const unsigned int line_;
 
 };
+
+class OperationSign : public Token {
+    public: 
+        OperationSign(std::string literal, TokenType type, unsigned int line);
+};
+
+class Literal : public Token {
+    public: 
+        Literal(std::string literal, TokenType type, unsigned int line);
+};
+
+class Building : public Token {
+    public: 
+        Building(std::string literal, TokenType type, unsigned int line);
+};
+
+class Keyword : public Token {
+    public: 
+        Keyword(std::string literal, TokenType type, unsigned int line);
+};
+
+
 
 std::ostream& operator<<(std::ostream& os, const Token& T);
 

@@ -64,3 +64,5 @@ class Scanner {
             {"output_priority", OUTPUT_PRIORITY}
         };
 };
+
+std::string classifyToken(TokenType token);

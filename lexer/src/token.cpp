@@ -17,3 +17,4 @@ std::ostream& operator<<(std::ostream& os, const Token& T) {
         << std::format("{:<5}", std::to_string(T.getLine()));
     return os;
 }
+
