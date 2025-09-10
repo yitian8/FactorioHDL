@@ -9,8 +9,11 @@ enum EntityType {
 class Node {
     public:
         virtual std::string getType() = 0;
+        virtual int getID() = 0;
         virtual std::vector<std::shared_ptr<Node>> getInput() = 0;
         virtual std::vector<std::shared_ptr<Node>> getOutput() = 0;
+        friend bool connect(Node& input, Node& output);
+    protected:
         virtual void addInput(Node& n) = 0;
         virtual void addOutput(Node& n) = 0;
 };
@@ -20,10 +23,14 @@ class InPort : public Node{
         virtual std::string getType() override {return "InPort";};
         virtual std::vector<std::shared_ptr<Node>> getInput() override{return std::vector<std::shared_ptr<Node>>{};};
         virtual std::vector<std::shared_ptr<Node>> getOutput() override{return output_;};
+        int getID() {return id_;}
+        InPort();
+    protected:
         void addInput(Node& n) override;
         void addOutput(Node& n) override;
-    private:
+    private:  
         std::vector<std::shared_ptr<Node>> output_;
+        int id_;
 };
 
 class OutPort : public Node{
@@ -31,10 +38,14 @@ class OutPort : public Node{
         virtual std::string getType() override {return "OutPort";};
         virtual std::vector<std::shared_ptr<Node>> getInput() override{return input_;}
         virtual std::vector<std::shared_ptr<Node>> getOutput() override{return std::vector<std::shared_ptr<Node>>{};}
+        int getID() {return id_;}
+        OutPort();
+    protected:
         void addInput(Node& n) override;
         void addOutput(Node& n) override;
     private:
         std::vector<std::shared_ptr<Node>> input_;
+        int id_;
 };
 
 class Entity : public Node {
@@ -42,21 +53,24 @@ class Entity : public Node {
         virtual std::string getType() {return "Entity";}
         virtual std::vector<std::shared_ptr<Node>> getInput() {return input_;}
         virtual std::vector<std::shared_ptr<Node>> getOutput() {return output_;}
-        virtual void addInput(Node& n) override;
-        virtual void addOutput(Node& n) override;
         EntityType getEntityType() {return entitytype_;}
         Entity() = delete;
         Entity(EntityType entitytype);
+        int getID() {return id_;}
+    protected:
+        virtual void addInput(Node& n) override;
+        virtual void addOutput(Node& n) override;
     private:
-        
+        int id_;
         EntityType entitytype_;
         std::vector<std::shared_ptr<Node>> input_;
         std::vector<std::shared_ptr<Node>> output_;
 };
 
-class Transportation: public Entity {
+class Transportation: public Entity { 
     public:
         std::string getType() override {return "Transportation";}
+    protected:
         void addInput(Node& n) override;
         void addOutput(Node& n) override;
 };
@@ -68,7 +82,8 @@ class Transfer : public Entity {
 
 class Factory : public Entity {
     public:
-        std::string getType() override {return "Factory";};
+        std::string getType() override {return "Factory";}
+    protected:
         void addInput(Node& n) override;
         void addOutput(Node& n) override;
 };

@@ -1,4 +1,7 @@
 #include "node.h"
+#include <random>
+#include <stdexcept>
+#include <iostream>
 
 void InPort::addInput(Node& n) {
     throw std::logic_error("Cannot add input to an InPort");
@@ -54,6 +57,7 @@ void Factory::addOutput(Node& n) {
 
 Entity::Entity(EntityType entitytype) {
     entitytype_ = entitytype;
+    id_ = std::rand();
 }
 
 bool connect(Node& input, Node& output) {
@@ -61,7 +65,16 @@ bool connect(Node& input, Node& output) {
         input.addInput(output);
         output.addOutput(input);
     } catch (std::logic_error e) {
+        std::cerr<< e.what() << std::endl;
         return false;
     }
     return true;
+}
+
+InPort::InPort() {
+    id_ = std::rand();
+}
+
+OutPort::OutPort() {
+    id_ = std::rand();
 }
