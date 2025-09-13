@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.10)
+project(run_testgraph)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Add executable with sources
+add_executable(testgraph src/graph.cpp src/node.cpp tests/graph_test.cpp)
+
+# Include the 'include' directory
+target_include_directories(testgraph PUBLIC include)
+
+

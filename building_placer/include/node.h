@@ -1,92 +1,72 @@
+#pragma once
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
-enum EntityType {
-    ASSEMBLER, BELT, INSERTER, FURNACE, CHEST
-};
 
-class Node {
-    public:
-        virtual std::string getType() = 0;
-        virtual int getID() = 0;
-        virtual std::vector<std::shared_ptr<Node>> getInput() = 0;
-        virtual std::vector<std::shared_ptr<Node>> getOutput() = 0;
-        friend bool connect(Node& input, Node& output);
-    protected:
-        virtual void addInput(Node& n) = 0;
-        virtual void addOutput(Node& n) = 0;
-};
-
-class InPort : public Node{
-    public:
-        virtual std::string getType() override {return "InPort";};
-        virtual std::vector<std::shared_ptr<Node>> getInput() override{return std::vector<std::shared_ptr<Node>>{};};
-        virtual std::vector<std::shared_ptr<Node>> getOutput() override{return output_;};
-        int getID() {return id_;}
-        InPort();
-    protected:
-        void addInput(Node& n) override;
-        void addOutput(Node& n) override;
-    private:  
-        std::vector<std::shared_ptr<Node>> output_;
-        int id_;
-};
-
-class OutPort : public Node{
-    public:
-        virtual std::string getType() override {return "OutPort";};
-        virtual std::vector<std::shared_ptr<Node>> getInput() override{return input_;}
-        virtual std::vector<std::shared_ptr<Node>> getOutput() override{return std::vector<std::shared_ptr<Node>>{};}
-        int getID() {return id_;}
-        OutPort();
-    protected:
-        void addInput(Node& n) override;
-        void addOutput(Node& n) override;
-    private:
-        std::vector<std::shared_ptr<Node>> input_;
-        int id_;
-};
-
-class Entity : public Node {
+class Entity {
     public:
         virtual std::string getType() {return "Entity";}
-        virtual std::vector<std::shared_ptr<Node>> getInput() {return input_;}
-        virtual std::vector<std::shared_ptr<Node>> getOutput() {return output_;}
-        EntityType getEntityType() {return entitytype_;}
+        virtual std::map<size_t, std::shared_ptr<Entity>> getInput() {return input_;}
+        virtual std::map<size_t, std::shared_ptr<Entity>> getOutput() {return output_;}
+        std::string getEntityType() {return entitytype_;}
         Entity() = delete;
-        Entity(EntityType entitytype);
-        int getID() {return id_;}
+        Entity(std::string entitytype);
+        Entity(Entity& rhs);
+        size_t getID() const {return id_;}
+        friend bool connect(Entity& input, Entity& output);
     protected:
-        virtual void addInput(Node& n) override;
-        virtual void addOutput(Node& n) override;
+
+        // Adds n to the input list of the node.
+        virtual void addInput(Entity& n);
+
+        // Adds n to the output list of the node.
+        virtual void addOutput(Entity& n);
+
     private:
-        int id_;
-        EntityType entitytype_;
-        std::vector<std::shared_ptr<Node>> input_;
-        std::vector<std::shared_ptr<Node>> output_;
+        static size_t next_id_;
+        const size_t id_;
+        std::string entitytype_;
+        std::map<size_t, std::shared_ptr<Entity>> input_;
+        std::map<size_t, std::shared_ptr<Entity>> output_;
 };
 
 class Transportation: public Entity { 
     public:
         std::string getType() override {return "Transportation";}
+        Transportation(std::string type);
     protected:
-        void addInput(Node& n) override;
-        void addOutput(Node& n) override;
+        // Adds n to the input list of the node.
+        // Only Transfer nodes and Transportation nodes are allowed to be added to input.
+        void addInput(Entity& n) override;
+        void addOutput(Entity& n) override;
 };
 
 class Transfer : public Entity {
     public:
+        Transfer(std::string type);
         std::string getType() override {return "Transfer";}
 };
 
 class Factory : public Entity {
     public:
+        Factory(std::string type);
         std::string getType() override {return "Factory";}
     protected:
-        void addInput(Node& n) override;
-        void addOutput(Node& n) override;
+        void addInput(Entity& n) override;
+        void addOutput(Entity& n) override;
+}; 
+
+class Pipe : public Entity {
+    public:
+        Pipe(std::string type);
+        std::string getType() override {return "Pipe";}
+    protected:
+        void addInput(Entity& n) override;
+        void addOutput(Entity& n) override;
 };
 
-bool connect(Node& input, Node& output);
+
+
 
