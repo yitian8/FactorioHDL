@@ -4,27 +4,46 @@
 
 size_t Entity::next_id_ = 0;
 
+void Entity::removeInput(Entity& n) {
+    if (&n == this) {
+        throw std::logic_error("Cannot remove oneself from its input nodes");
+    }
+    if (!input_.contains(n.getID())) {
+        throw std::logic_error("Node being removed from input is not connected to the current node");
+    }
+    input_.erase(n.id_);
+}
+
+void Entity::removeOutput(Entity& n) {
+    if (&n == this) {
+        throw std::logic_error("Cannot remove oneself from its output nodes");
+    }
+    if (!output_.contains(n.getID())) {
+        throw std::logic_error("Node being removed from output is not connected to the current node");
+    }
+    output_.erase(n.id_);
+}
 
 void Entity::addInput(Entity& n) {
     if (&n == this) {
         throw std::logic_error("Cannot connect the I/O port of an entity to itself");
     }
-    if (input_.contains(n.getID())) {
+    if (input_.contains(n.id_)) {
         throw std::logic_error("Cannot have multiedges in graphs");
     }
-    input_.insert(std::make_pair(n.getID(), std::make_shared<Entity>(n)));
+    input_.insert(std::make_pair(n.id_, &n));
 }
 
 void Entity::addOutput(Entity& n) {
     if (&n == this) {
         throw std::logic_error("Cannot connect the I/O port of an entity to itself");
     }
-    if (input_.contains(n.getID())) {
+    if (input_.contains(n.id_)) {
         throw std::logic_error("Cannot have multiedges in graphs");
     }
-    output_.insert(std::make_pair(n.getID(), std::make_shared<Entity>(n)));
+    output_.insert(std::make_pair(n.id_, &n));
 }
-
+ 
 void Transportation::addInput(Entity& n) {
     if (n.getType() == "Transfer" || n.getType() == "Transportation") {
         Entity::addInput(n);
@@ -39,6 +58,22 @@ void Transportation::addOutput(Entity& n) {
         Entity::addOutput(n);
     } else {
         throw std::logic_error("Cannot add " + n.getType() + " node to the output port of a " + getType() + " node");
+    }
+}
+
+void Transfer::addInput(Entity& n) {
+    if (n.getType() == "Pipe") {
+        throw std::logic_error("Cannot add " + n.getType() + " node to the input port of a " + getType() + " node");
+    } else {
+        Entity::addInput(n);
+    }
+}
+
+void Transfer::addOutput(Entity& n) {
+    if (n.getType() == "Pipe") {
+        throw std::logic_error("Cannot add " + n.getType() + " node to the output port of a " + getType() + " node");
+    } else {
+        Entity::addOutput(n);
     }
 }
 
@@ -59,18 +94,18 @@ void Factory::addOutput(Entity& n) {
 }
 
 void Pipe::addInput(Entity& n) {
-    if (n.getType() != "Factory") {
-        Entity::addInput(n);
-    } else {
+    if (n.getType() != "Factory" && n.getType() != "Pipe") {
         throw std::logic_error("Cannot add " + n.getType() + " node to the input port of a " + getType() + " node");
+    } else {
+        Entity::addInput(n);
     }
 }
 
 void Pipe::addOutput(Entity& n) {
-    if (n.getType() != "Factory") {
-        Entity::addOutput(n);
-    } else {
+    if (n.getType() != "Factory" && n.getType() != "Pipe") {
         throw std::logic_error("Cannot add " + n.getType() + " node to the output port of a " + getType() + " node");
+    } else {
+        Entity::addOutput(n);
     }
 }
 
@@ -82,25 +117,16 @@ Entity::Entity(Entity& rhs) : id_(next_id_++) {
     entitytype_ = rhs.entitytype_;
     input_ = rhs.input_;
     output_ = rhs.output_;
-    // for (auto& pair : input_) {
-    //     pair.second -> addOutput(*this);
-    // }
-    // for (auto& pair : output_) {
-    //     pair.second -> addInput(*this);
-    // }
-}
-
-
-bool connect(Entity& input, Entity& output) {
-    try {
-        input.addInput(output);
-        output.addOutput(input);
-    } catch (std::logic_error e) {
-        std::cerr<< e.what() << std::endl;
-        return false;
+    for (auto& pair : input_) {
+        pair.second -> addOutput(*this);
     }
-    return true;
+    for (auto& pair : output_) {
+        pair.second -> addInput(*this);
+    }
 }
+
+
+
 
 Transportation::Transportation(std::string type) : Entity(type) {}
 
@@ -109,4 +135,12 @@ Transfer::Transfer(std::string type) : Entity(type) {}
 Factory::Factory(std::string type) : Entity(type) {} 
 
 Pipe::Pipe(std::string type) : Entity(type) {}
+
+Transportation::Transportation(Transportation& rhs) : Entity(rhs) {}
+
+Transfer::Transfer(Transfer& rhs) : Entity(rhs) {}
+
+Factory::Factory(Factory& rhs) : Entity(rhs){}
+
+Pipe::Pipe(Pipe& rhs) : Entity(rhs) {}
 
