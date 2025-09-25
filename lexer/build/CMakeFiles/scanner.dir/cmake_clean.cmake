@@ -1,13 +1,11 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/scanner.dir/src/run_scanner.cpp.obj"
-  "CMakeFiles/scanner.dir/src/run_scanner.cpp.obj.d"
-  "CMakeFiles/scanner.dir/src/scanner.cpp.obj"
-  "CMakeFiles/scanner.dir/src/scanner.cpp.obj.d"
-  "CMakeFiles/scanner.dir/src/token.cpp.obj"
-  "CMakeFiles/scanner.dir/src/token.cpp.obj.d"
-  "libscanner.dll.a"
-  "scanner.exe"
-  "scanner.exe.manifest"
+  "CMakeFiles/scanner.dir/src/run_scanner.cpp.o"
+  "CMakeFiles/scanner.dir/src/run_scanner.cpp.o.d"
+  "CMakeFiles/scanner.dir/src/scanner.cpp.o"
+  "CMakeFiles/scanner.dir/src/scanner.cpp.o.d"
+  "CMakeFiles/scanner.dir/src/token.cpp.o"
+  "CMakeFiles/scanner.dir/src/token.cpp.o.d"
+  "scanner"
   "scanner.pdb"
 )
 

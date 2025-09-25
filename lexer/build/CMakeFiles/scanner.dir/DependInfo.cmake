@@ -8,17 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "F:/Factorio HDL Compiler Project/lexer/src/run_scanner.cpp" "CMakeFiles/scanner.dir/src/run_scanner.cpp.obj" "gcc" "CMakeFiles/scanner.dir/src/run_scanner.cpp.obj.d"
-  "F:/Factorio HDL Compiler Project/lexer/src/scanner.cpp" "CMakeFiles/scanner.dir/src/scanner.cpp.obj" "gcc" "CMakeFiles/scanner.dir/src/scanner.cpp.obj.d"
-  "F:/Factorio HDL Compiler Project/lexer/src/token.cpp" "CMakeFiles/scanner.dir/src/token.cpp.obj" "gcc" "CMakeFiles/scanner.dir/src/token.cpp.obj.d"
+  "/workspaces/Factorio_HDL_Compiler_Project/lexer/src/run_scanner.cpp" "CMakeFiles/scanner.dir/src/run_scanner.cpp.o" "gcc" "CMakeFiles/scanner.dir/src/run_scanner.cpp.o.d"
+  "/workspaces/Factorio_HDL_Compiler_Project/lexer/src/scanner.cpp" "CMakeFiles/scanner.dir/src/scanner.cpp.o" "gcc" "CMakeFiles/scanner.dir/src/scanner.cpp.o.d"
+  "/workspaces/Factorio_HDL_Compiler_Project/lexer/src/token.cpp" "CMakeFiles/scanner.dir/src/token.cpp.o" "gcc" "CMakeFiles/scanner.dir/src/token.cpp.o.d"
   )
 
-# Targets to which this target links which contain Fortran sources.
-set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
-  )
-
-# Targets to which this target links which contain Fortran sources.
-set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.
