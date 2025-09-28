@@ -16,7 +16,15 @@ enum TokenType {
     BELT, PIPE, HEAT_PIPE,
 
     //Keywords
-    NONE, MODULE, ENDMODULE, ENTITY, ENDENTITY, BUILDING, PARAM, PORT
+    NONE, MODULE, ENDMODULE, ENTITY, ENDENTITY, BUILDING, PARAM, PORT,
+
+    // Epsilon character
+    EPSILON,
+
+    //Non-terminals
+    program, module_block, entity_block, module_declaration, module_statement_list, module_io_list,
+    declaration_list, bus_operator, param_list,
+    declaration_statement, identifier_list_no_bus, param_assignment,
 
 };
 
@@ -25,13 +33,16 @@ enum TokenType {
 class Token {
     public:
         Token(std::string literal, TokenType type, unsigned int line);
+        Token() = delete;
+        Token(const Token& rhs);
+        Token& operator=(const Token& rhs);
         std::string getLiteral() const;
         TokenType getType() const {return type_;};
         unsigned int getLine() const {return line_;};
     private:
         std::string literal_;
-        const TokenType type_;
-        const unsigned int line_;
+        TokenType type_;
+        unsigned int line_;
 
 };
 

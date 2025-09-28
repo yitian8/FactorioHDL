@@ -9,6 +9,7 @@ class Scanner {
         Scanner() = default;
         Scanner(std::string input_path);
         const std::vector<Token>& getToken() const;
+        
         void print();
 
     private:

@@ -1,1 +1,0 @@
-/usr/bin/g++-12 -std=c++20 CMakeFiles/scanner.dir/src/run_scanner.cpp.o CMakeFiles/scanner.dir/src/scanner.cpp.o CMakeFiles/scanner.dir/src/token.cpp.o -o scanner 

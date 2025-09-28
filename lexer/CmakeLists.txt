@@ -7,9 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_COMPILER g++)
 
 # Add executable with sources
-add_executable(scanner src/run_scanner.cpp src/scanner.cpp src/token.cpp)
+add_executable(scanner entry/run_scanner.cpp src/scanner.cpp src/token.cpp)
 
 # Include the 'include' directory
 target_include_directories(scanner PUBLIC include)
+
+add_executable(parser src/scanner.cpp src/token.cpp src/parser.cpp entry/run_parser.cpp)
+
+target_include_directories(parser PUBLIC include)
 
 

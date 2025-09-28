@@ -1,3 +1,6 @@
 lexer/data/
 lexer/build/
 building_placer/build
+.devcontainer
+.vs
+.vscode

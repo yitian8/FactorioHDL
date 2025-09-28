@@ -22,3 +22,12 @@ std::ostream& operator<<(std::ostream& os, const Token& T) {
     return os;
 }
 
+Token::Token(const Token& rhs) : literal_(rhs.literal_), type_(rhs.type_), line_(rhs.line_) {}
+
+Token& Token::operator=(const Token& rhs) {
+    literal_ = rhs.literal_;
+    type_ = rhs.type_;
+    line_ = rhs.line_;
+    return *this;
+}
+
